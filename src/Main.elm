@@ -26,8 +26,8 @@ main =
 init : Model
 init = 
     Model 
-        [ Shape 1 Ellipse "50" "50" "50" "50" "blue" "Shape 1"
-        , Shape 2 Rectangle "60" "50" "50" "50" "red" "Shape 2"
+        [ Shape 1 Ellipse "500" "300" "50" "50" "blue" "Shape 1"
+        , Shape 2 Rectangle "100" "100" "100" "50" "red" "Shape 2"
         ] 
         Ellipse "50" "50" "50" "50" "blue" 1 "Shape 1"
 

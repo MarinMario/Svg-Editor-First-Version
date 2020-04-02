@@ -4486,8 +4486,8 @@ var $author$project$Main$init = A9(
 	$author$project$CustomTypes$Model,
 	_List_fromArray(
 		[
-			A8($author$project$CustomTypes$Shape, 1, $author$project$CustomTypes$Ellipse, '50', '50', '50', '50', 'blue', 'Shape 1'),
-			A8($author$project$CustomTypes$Shape, 2, $author$project$CustomTypes$Rectangle, '60', '50', '50', '50', 'red', 'Shape 2')
+			A8($author$project$CustomTypes$Shape, 1, $author$project$CustomTypes$Ellipse, '500', '300', '50', '50', 'blue', 'Shape 1'),
+			A8($author$project$CustomTypes$Shape, 2, $author$project$CustomTypes$Rectangle, '100', '100', '100', '50', 'red', 'Shape 2')
 		]),
 	$author$project$CustomTypes$Ellipse,
 	'50',
