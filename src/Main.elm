@@ -1,16 +1,19 @@
 module Main exposing (main)
 
-import Browser
-
 import Array
+import Browser
 
 import Html exposing (Html, div, button, input, br)
 import Html.Events exposing (onClick, onInput)
 import Html.Attributes exposing (value)
 
-import Svg exposing (Svg, svg, circle, text)
--- import Svg.Events exposing ()
+import Svg exposing (Svg, svg, text)
 import Svg.Attributes exposing (..)
+
+import Components exposing (..)
+import CustomTypes exposing (..)
+import HelperFunctions exposing (..)
+
 
 main : Program () Model Msg
 main =
@@ -31,17 +34,6 @@ type alias Model =
     , selectedShape : Int
     }
 
-type alias Shape =
-    { id : Int
-    , shapeType : ShapeType
-    , xPos : String
-    , yPos : String
-    , width : String
-    , height : String
-    , color : String
-    }
-
-type ShapeType = Ellipse | Rectangle
 
 init : Model
 init = 
@@ -50,18 +42,6 @@ init =
         , Shape 2 Rectangle "60" "50" "50" "50" "red"
         ] 
         Ellipse "50" "50" "50" "50" "blue" 1
-
-type Msg
-    = CreateShape
-    | InputShapeType ShapeType
-    | InputXPos String
-    | InputYPos String
-    | InputWidth String
-    | InputHeight String
-    | InputColor String
-    | SelectShape Int
-    | RemoveShape
-    | EditShape
 
 update : Msg -> Model -> Model
 update msg model =
@@ -153,93 +133,37 @@ view : Model -> Html Msg
 view model =
     let
         svgShapes = 
-            List.map (\shape -> 
-                if shape.shapeType == Ellipse then
-                    Svg.ellipse 
-                        [ cx shape.xPos
-                        , cy shape.yPos
-                        , rx shape.width
-                        , ry shape.height
-                        , fill shape.color 
-                        , onClick <| SelectShape shape.id
-                        , stroke "black",
-                        if model.selectedShape == shape.id then
-                            strokeWidth "5"
-                        else
-                            strokeWidth "0"
-                        ] []
-                else
-                    Svg.rect 
-                        [ x shape.xPos
-                        , y shape.yPos
-                        , width shape.width
-                        , height shape.height
-                        , fill shape.color
-                        , onClick <| SelectShape shape.id
-                        , stroke "black",
-                        if model.selectedShape == shape.id then
-                            strokeWidth "5"
-                        else
-                            strokeWidth "0"
-                        ] []
-                ) model.svgShapes
+            convertToSvg
+                model.svgShapes
+                model.selectedShape
         
-        convertedCode = 
-            if model.inputShapeType == Ellipse then
-                String.concat
-                    [ "<ellipse cx=\'", model.inputXPos
-                    , "\' cy=\'" ++ model.inputYPos
-                    , "\' rx=\'" ++ model.inputWidth
-                    , "\' ry=\'"  ++ model.inputHeight
-                    , "/>"
-                    ]
-            else 
-                String.concat
-                    [ "<rect x=\'", model.inputXPos
-                    , "\' y=\'" ++ model.inputYPos
-                    , "\' width=\'" ++ model.inputWidth
-                    , "\' height=\'"  ++ model.inputHeight
-                    , "/>"
-                    ]
+        convertedCode =
+            convertToCode
+                model.inputShapeType
+                model.inputXPos
+                model.inputYPos
+                model.inputWidth
+                model.inputHeight
+                model.inputColor
+        
     in
     
     div [] 
         [ svg [width "600", height "400", Html.Attributes.style "border" "solid"] svgShapes 
         , br [] []
-        , text <| "Selected Shape: shape " ++ String.fromInt model.selectedShape
+        , div [] [text <| "Selected Shape: shape " ++ String.fromInt model.selectedShape]
+        , chooseShape Ellipse "Ellipse"
+        , chooseShape Rectangle "Rectangle"
         , br [] []
-        , button [ onClick <| InputShapeType Ellipse ] [ text "Ellipse"]
-        , button [ onClick <| InputShapeType Rectangle ] [ text "Rectangle" ]
-        , br [] []
-        , propertyInput "x pos: " InputXPos model.inputXPos
+        , propertyInput "x pos: " InputXPos model.inputXPos 
         , propertyInput "y pos: " InputYPos model.inputYPos
         , propertyInput "width: " InputWidth model.inputWidth
         , propertyInput "height: " InputHeight model.inputHeight
         , propertyInput "color: " InputColor model.inputColor
-        , button [ onClick EditShape ] [ Html.text "Edit Shape" ]
+        , applyFunction EditShape "Edit Shape"
         , br [] []
-        , button [ onClick CreateShape ] [ Html.text "Create Shape" ]
+        , applyFunction CreateShape "Create Shape"
         , br [] []
-        , button [ onClick RemoveShape ] [ Html.text "Remove Shape" ]
-        , div [] [ text convertedCode]
+        , applyFunction RemoveShape "Remove Shape"
+        , div [ Html.Attributes.class "convertedCode" ] [ text convertedCode ]
         ]
-
-propertyInput : String -> (String -> Msg) -> String -> Html Msg
-propertyInput theText theInput theValue =
-    div [] 
-        [ Html.text theText
-        , input [ onInput theInput, value theValue ] []
-        , br [] []
-        ]
-
-
-getSelectedShape : List Shape -> Int -> Shape
-getSelectedShape listToFilter id =
-    let
-        filterList = List.head <| List.filter (\shape -> shape.id == id) listToFilter
-    in
-    case filterList of
-        Just shape ->
-            shape
-        Nothing -> 
-            Shape 1 Ellipse "50" "50" "50" "50" "blue" 

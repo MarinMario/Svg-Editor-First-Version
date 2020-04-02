@@ -1,17 +1,3 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Main</title>
-  <style>body { padding: 0; margin: 0; }</style>
-</head>
-
-<body>
-
-<pre id="elm"></pre>
-
-<script>
-try {
 (function(scope){
 'use strict';
 
@@ -5337,6 +5323,22 @@ var $elm$core$List$head = function (list) {
 		return $elm$core$Maybe$Nothing;
 	}
 };
+var $author$project$Main$getSelectedShape = F2(
+	function (listToFilter, id) {
+		var filterList = $elm$core$List$head(
+			A2(
+				$elm$core$List$filter,
+				function (shape) {
+					return _Utils_eq(shape.id, id);
+				},
+				listToFilter));
+		if (filterList.$ === 'Just') {
+			var shape = filterList.a;
+			return shape;
+		} else {
+			return A7($author$project$Main$Shape, 1, $author$project$Main$Ellipse, '50', '50', '50', '50', 'blue');
+		}
+	});
 var $elm$core$Array$length = function (_v0) {
 	var len = _v0.a;
 	return len;
@@ -5346,12 +5348,12 @@ var $author$project$Main$update = F2(
 	function (msg, model) {
 		var arrayShapes = $elm$core$Array$fromList(model.svgShapes);
 		var nextId = function () {
-			var _v2 = A2(
+			var _v1 = A2(
 				$elm$core$Array$get,
 				$elm$core$Array$length(arrayShapes) - 1,
 				arrayShapes);
-			if (_v2.$ === 'Just') {
-				var shape = _v2.a;
+			if (_v1.$ === 'Just') {
+				var shape = _v1.a;
 				return shape.id + 1;
 			} else {
 				return 1;
@@ -5402,21 +5404,7 @@ var $author$project$Main$update = F2(
 					{inputColor: color});
 			case 'SelectShape':
 				var id = msg.a;
-				var filterId = $elm$core$List$head(
-					A2(
-						$elm$core$List$filter,
-						function (shape) {
-							return _Utils_eq(shape.id, id);
-						},
-						model.svgShapes));
-				var selectedShape = function () {
-					if (filterId.$ === 'Just') {
-						var shape = filterId.a;
-						return shape;
-					} else {
-						return A7($author$project$Main$Shape, 1, $author$project$Main$Ellipse, '50', '50', '50', '50', 'blue');
-					}
-				}();
+				var selectedShape = A2($author$project$Main$getSelectedShape, model.svgShapes, id);
 				return _Utils_update(
 					model,
 					{inputColor: selectedShape.color, inputHeight: selectedShape.height, inputShapeType: selectedShape.shapeType, inputWidth: selectedShape.width, inputXPos: selectedShape.xPos, inputYPos: selectedShape.yPos, selectedShape: id});
@@ -5468,6 +5456,26 @@ var $author$project$Main$SelectShape = function (a) {
 };
 var $elm$html$Html$br = _VirtualDom_node('br');
 var $elm$html$Html$button = _VirtualDom_node('button');
+var $elm$json$Json$Encode$string = _Json_wrap;
+var $elm$html$Html$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$string(string));
+	});
+var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
+var $elm$core$String$concat = function (strings) {
+	return A2($elm$core$String$join, '', strings);
+};
+var $author$project$Main$convertToCode = F6(
+	function (shapeType, xPos, yPos, width, height, color) {
+		return _Utils_eq(shapeType, $author$project$Main$Ellipse) ? $elm$core$String$concat(
+			_List_fromArray(
+				['<ellipse cx=\'', xPos, '\' cy=\'' + yPos, '\' rx=\'' + width, '\' ry=\'' + height, '\' fill=\'' + color, '\'/>'])) : $elm$core$String$concat(
+			_List_fromArray(
+				['<rect x=\'', xPos, '\' y=\'' + yPos, '\' width=\'' + width, '\' height=\'' + height, '\' fill=\'' + color, '\'/>']));
+	});
 var $elm$svg$Svg$Attributes$cx = _VirtualDom_attribute('cx');
 var $elm$svg$Svg$Attributes$cy = _VirtualDom_attribute('cy');
 var $elm$html$Html$div = _VirtualDom_node('div');
@@ -5528,14 +5536,6 @@ var $elm$html$Html$Events$onInput = function (tagger) {
 };
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
-var $elm$json$Json$Encode$string = _Json_wrap;
-var $elm$html$Html$Attributes$stringProperty = F2(
-	function (key, string) {
-		return A2(
-			_VirtualDom_property,
-			key,
-			$elm$json$Json$Encode$string(string));
-	});
 var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
 var $author$project$Main$propertyInput = F3(
 	function (theText, theInput, theValue) {
@@ -5603,6 +5603,7 @@ var $author$project$Main$view = function (model) {
 				_List_Nil);
 		},
 		model.svgShapes);
+	var convertedCode = A6($author$project$Main$convertToCode, model.inputShapeType, model.inputXPos, model.inputYPos, model.inputWidth, model.inputHeight, model.inputColor);
 	return A2(
 		$elm$html$Html$div,
 		_List_Nil,
@@ -5680,6 +5681,16 @@ var $author$project$Main$view = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text('Remove Shape')
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('convertedCode')
+					]),
+				_List_fromArray(
+					[
+						$elm$svg$Svg$text(convertedCode)
 					]))
 			]));
 };
@@ -5687,21 +5698,3 @@ var $author$project$Main$main = $elm$browser$Browser$sandbox(
 	{init: $author$project$Main$init, update: $author$project$Main$update, view: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(_Utils_Tuple0))(0)}});}(this));
-
-  var app = Elm.Main.init({ node: document.getElementById("elm") });
-}
-catch (e)
-{
-  // display initialization errors (e.g. bad flags, infinite recursion)
-  var header = document.createElement("h1");
-  header.style.fontFamily = "monospace";
-  header.innerText = "Initialization Error";
-  var pre = document.getElementById("elm");
-  document.body.insertBefore(header, pre);
-  pre.innerText = e;
-  throw e;
-}
-</script>
-
-</body>
-</html>
