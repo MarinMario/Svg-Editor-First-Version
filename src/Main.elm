@@ -23,18 +23,6 @@ main =
         , update = update
         }
 
-type alias Model = 
-    { svgShapes : List Shape
-    , inputShapeType : ShapeType
-    , inputXPos : String
-    , inputYPos : String
-    , inputWidth : String
-    , inputHeight : String
-    , inputColor : String
-    , selectedShape : Int
-    }
-
-
 init : Model
 init = 
     Model 
@@ -146,24 +134,30 @@ view model =
                 model.inputHeight
                 model.inputColor
         
+        selectShapeButtons = 
+            List.map (\shape -> selectShapeButton shape.id) model.svgShapes
+        
     in
     
-    div [] 
-        [ svg [width "600", height "400", Html.Attributes.style "border" "solid"] svgShapes 
-        , br [] []
-        , div [] [text <| "Selected Shape: shape " ++ String.fromInt model.selectedShape]
-        , chooseShape Ellipse "Ellipse"
-        , chooseShape Rectangle "Rectangle"
-        , br [] []
-        , propertyInput "x pos: " InputXPos model.inputXPos 
-        , propertyInput "y pos: " InputYPos model.inputYPos
-        , propertyInput "width: " InputWidth model.inputWidth
-        , propertyInput "height: " InputHeight model.inputHeight
-        , propertyInput "color: " InputColor model.inputColor
-        , applyFunction EditShape "Edit Shape"
-        , br [] []
-        , applyFunction CreateShape "Create Shape"
-        , br [] []
-        , applyFunction RemoveShape "Remove Shape"
-        , div [ Html.Attributes.class "convertedCode" ] [ text convertedCode ]
+    div [ Html.Attributes.class "app" ] 
+        [ div [ Html.Attributes.class "canvas" ] 
+            [ svg [width "1000", height "600"]  svgShapes ]
+        , div [ Html.Attributes.class "editor" ] 
+            [ div [] [text <| "Selected Shape: shape " ++ String.fromInt model.selectedShape]
+            , div [ Html.Attributes.class "selectShapeButtons" ] selectShapeButtons
+            , chooseShape Ellipse "Ellipse"
+            , chooseShape Rectangle "Rectangle"
+            , br [] []
+            , propertyInput "x pos: " InputXPos model.inputXPos 
+            , propertyInput "y pos: " InputYPos model.inputYPos
+            , propertyInput "width: " InputWidth model.inputWidth
+            , propertyInput "height: " InputHeight model.inputHeight
+            , propertyInput "color: " InputColor model.inputColor
+            , applyFunction EditShape "Edit Shape"
+            , br [] []
+            , applyFunction CreateShape "Create Shape"
+            , br [] []
+            , applyFunction RemoveShape "Remove Shape"
+            , div [ Html.Attributes.class "convertedCode" ] [ text convertedCode ]
+            ]
         ]

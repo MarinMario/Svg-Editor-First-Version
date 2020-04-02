@@ -3,7 +3,10 @@ module HelperFunctions exposing (..)
 import CustomTypes exposing (..)
 import Svg exposing (Svg)
 import Svg.Attributes exposing (..)
+
+import Html exposing (text, button, Html)
 import Html.Events exposing (onClick)
+import Html.Attributes exposing (class)
 
 getSelectedShape : List Shape -> Int -> Shape
 getSelectedShape listToFilter id =
@@ -69,3 +72,7 @@ convertToSvg listWithElements selectedShape =
                     strokeWidth "0"
                 ] []
         ) listWithElements
+
+selectShapeButton : Int -> Html Msg
+selectShapeButton id =
+    button [ onClick <| SelectShape id ] [ text <| "Shape " ++ String.fromInt id ]
