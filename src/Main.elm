@@ -110,13 +110,7 @@ update msg model =
 
         SelectShape id->
             let
-                filterId = List.head <| List.filter (\shape -> shape.id == id) model.svgShapes
-                selectedShape = 
-                    case filterId of
-                    Just shape ->
-                        shape
-                    Nothing -> 
-                        Shape 1 Ellipse "50" "50" "50" "50" "blue" 
+                selectedShape = getSelectedShape model.svgShapes id
             in
             
             { model 
@@ -153,6 +147,8 @@ update msg model =
             { model | svgShapes = editedShapes }
 
 
+
+
 view : Model -> Html Msg
 view model =
     let
@@ -187,6 +183,24 @@ view model =
                             strokeWidth "0"
                         ] []
                 ) model.svgShapes
+        
+        convertedCode = 
+            if model.inputShapeType == Ellipse then
+                String.concat
+                    [ "<ellipse cx=\'", model.inputXPos
+                    , "\' cy=\'" ++ model.inputYPos
+                    , "\' rx=\'" ++ model.inputWidth
+                    , "\' ry=\'"  ++ model.inputHeight
+                    , "/>"
+                    ]
+            else 
+                String.concat
+                    [ "<rect x=\'", model.inputXPos
+                    , "\' y=\'" ++ model.inputYPos
+                    , "\' width=\'" ++ model.inputWidth
+                    , "\' height=\'"  ++ model.inputHeight
+                    , "/>"
+                    ]
     in
     
     div [] 
@@ -207,6 +221,7 @@ view model =
         , button [ onClick CreateShape ] [ Html.text "Create Shape" ]
         , br [] []
         , button [ onClick RemoveShape ] [ Html.text "Remove Shape" ]
+        , div [] [ text convertedCode]
         ]
 
 propertyInput : String -> (String -> Msg) -> String -> Html Msg
@@ -216,4 +231,15 @@ propertyInput theText theInput theValue =
         , input [ onInput theInput, value theValue ] []
         , br [] []
         ]
-    
+
+
+getSelectedShape : List Shape -> Int -> Shape
+getSelectedShape listToFilter id =
+    let
+        filterList = List.head <| List.filter (\shape -> shape.id == id) listToFilter
+    in
+    case filterList of
+        Just shape ->
+            shape
+        Nothing -> 
+            Shape 1 Ellipse "50" "50" "50" "50" "blue" 
