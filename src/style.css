@@ -1,0 +1,49 @@
+.app {
+    display: grid;
+
+    grid-template-areas: 
+        "b c c c c c c c c c c e"
+    ;
+}
+
+.editor {
+    border: solid 1px black;
+    grid-area: e;
+    padding: 1rem;
+}
+
+.canvas {
+    border: solid 1px black;
+    grid-area: c;
+}
+
+.selectShapeButtons {
+    border: solid 1px black;
+    grid-area: b;
+    padding: 1rem;
+}
+
+.selectShapeButtons > button {
+    width: 100%;
+}
+
+.convertedCode {
+    border: black solid 1px;
+    max-width: 10rem;
+    padding: 1rem;
+}
+
+.title {
+    border: solid black 1px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.propertyInputs {
+    border: 1px solid black;
+    padding: 1rem;
+}
+
+button {
+    width: 100%;
+}

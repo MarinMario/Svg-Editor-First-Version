@@ -1,6 +1,6 @@
 module Components exposing (..)
 
-import Html exposing (Html, div, input, br, button)
+import Html exposing (Html, div, input, br, button, text)
 import Html.Events exposing (onInput, onClick)
 import Html.Attributes exposing (value)
 
@@ -21,3 +21,8 @@ chooseShape shapeType textToShow=
 applyFunction : Msg -> String -> Html Msg
 applyFunction msg textToShow =
     button [ onClick msg ] [ Html.text textToShow ]
+
+selectShapeButton : Int -> String -> Html Msg
+selectShapeButton id name =
+    button [ onClick <| SelectShape id, Html.Attributes.class "selectShapeButton" ] 
+        [ text name ]

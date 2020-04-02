@@ -17,7 +17,7 @@ getSelectedShape listToFilter id =
         Just shape ->
             shape
         Nothing -> 
-            Shape 1 Ellipse "50" "50" "50" "50" "blue" 
+            Shape 1 Ellipse "50" "50" "50" "50" "blue" "Shape 1"
 
 convertToCode : ShapeType -> String -> String -> String -> String -> String -> String
 convertToCode shapeType xPos yPos width height color = 
@@ -72,7 +72,3 @@ convertToSvg listWithElements selectedShape =
                     strokeWidth "0"
                 ] []
         ) listWithElements
-
-selectShapeButton : Int -> Html Msg
-selectShapeButton id =
-    button [ onClick <| SelectShape id ] [ text <| "Shape " ++ String.fromInt id ]

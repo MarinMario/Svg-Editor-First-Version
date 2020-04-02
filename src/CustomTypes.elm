@@ -9,6 +9,7 @@ type alias Model =
     , inputHeight : String
     , inputColor : String
     , selectedShape : Int
+    , inputName : String
     }
 
 type alias Shape =
@@ -19,6 +20,7 @@ type alias Shape =
     , width : String
     , height : String
     , color : String
+    , name : String
     }
 
 type ShapeType = Ellipse | Rectangle
@@ -34,3 +36,4 @@ type Msg
     | SelectShape Int
     | RemoveShape
     | EditShape
+    | InputName String
