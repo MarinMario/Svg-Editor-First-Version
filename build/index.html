@@ -5362,6 +5362,7 @@ var $author$project$Main$update = F2(
 				return _Utils_update(
 					model,
 					{
+						selectedShape: nextId,
 						svgShapes: _Utils_ap(
 							model.svgShapes,
 							_List_fromArray(
@@ -5558,6 +5559,8 @@ var $author$project$Main$propertyInput = F3(
 var $elm$svg$Svg$rect = $elm$svg$Svg$trustedNode('rect');
 var $elm$svg$Svg$Attributes$rx = _VirtualDom_attribute('rx');
 var $elm$svg$Svg$Attributes$ry = _VirtualDom_attribute('ry');
+var $elm$svg$Svg$Attributes$stroke = _VirtualDom_attribute('stroke');
+var $elm$svg$Svg$Attributes$strokeWidth = _VirtualDom_attribute('stroke-width');
 var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
 var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');
@@ -5579,7 +5582,9 @@ var $author$project$Main$view = function (model) {
 						$elm$svg$Svg$Attributes$ry(shape.height),
 						$elm$svg$Svg$Attributes$fill(shape.color),
 						$elm$html$Html$Events$onClick(
-						$author$project$Main$SelectShape(shape.id))
+						$author$project$Main$SelectShape(shape.id)),
+						$elm$svg$Svg$Attributes$stroke('black'),
+						_Utils_eq(model.selectedShape, shape.id) ? $elm$svg$Svg$Attributes$strokeWidth('5') : $elm$svg$Svg$Attributes$strokeWidth('0')
 					]),
 				_List_Nil) : A2(
 				$elm$svg$Svg$rect,
@@ -5591,7 +5596,9 @@ var $author$project$Main$view = function (model) {
 						$elm$svg$Svg$Attributes$height(shape.height),
 						$elm$svg$Svg$Attributes$fill(shape.color),
 						$elm$html$Html$Events$onClick(
-						$author$project$Main$SelectShape(shape.id))
+						$author$project$Main$SelectShape(shape.id)),
+						$elm$svg$Svg$Attributes$stroke('black'),
+						_Utils_eq(model.selectedShape, shape.id) ? $elm$svg$Svg$Attributes$strokeWidth('5') : $elm$svg$Svg$Attributes$strokeWidth('0')
 					]),
 				_List_Nil);
 		},

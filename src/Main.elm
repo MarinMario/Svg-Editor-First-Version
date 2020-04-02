@@ -87,6 +87,7 @@ update msg model =
                     model.inputWidth model.inputHeight
                     model.inputColor
                     ] 
+            , selectedShape = nextId
             }
 
         InputShapeType shapeType ->
@@ -165,6 +166,11 @@ view model =
                         , ry shape.height
                         , fill shape.color 
                         , onClick <| SelectShape shape.id
+                        , stroke "black",
+                        if model.selectedShape == shape.id then
+                            strokeWidth "5"
+                        else
+                            strokeWidth "0"
                         ] []
                 else
                     Svg.rect 
@@ -174,6 +180,11 @@ view model =
                         , height shape.height
                         , fill shape.color
                         , onClick <| SelectShape shape.id
+                        , stroke "black",
+                        if model.selectedShape == shape.id then
+                            strokeWidth "5"
+                        else
+                            strokeWidth "0"
                         ] []
                 ) model.svgShapes
     in
