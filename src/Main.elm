@@ -139,10 +139,7 @@ view model =
         , h3 [ At.class "title", At.class "propertiesTitle" ] [ text "Properties" ]
         , div [ At.class "editor" ] 
             [ div [ At.class "showSelected" ] [text <| "Selected Shape: " ++ model.inputName]
-            , propertyInputs 
-                model.inputName model.inputXPos 
-                model.inputYPos model.inputWidth 
-                model.inputHeight model.inputColor
+            , propertyInputs model
             , commandButtons
             , div [ At.class "convertedCode" ] [ text <| convertToCode model ]
             ]

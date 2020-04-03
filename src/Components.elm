@@ -7,7 +7,7 @@ import Html.Attributes as At
 import Svg exposing (Svg)
 import Svg.Attributes as Sat
 
-import CustomTypes exposing (Msg(..), ShapeType(..), Shape)
+import CustomTypes exposing (Msg(..), ShapeType(..), Shape, Model)
 
 
 propertyInput : String -> (String -> Msg) -> String -> Html Msg
@@ -31,19 +31,19 @@ selectShapeButton shape =
     button [ onClick <| SelectShape shape.id, At.class "selectShapeButton" ] 
         [ text shape.name ]
 
-propertyInputs : String -> String -> String -> String -> String -> String -> Html Msg
-propertyInputs name xPos yPos width height color =
+propertyInputs : Model -> Html Msg
+propertyInputs model =
     div [ At.class "propertyInputs" ] 
         [ text "type: "
         , chooseShape Line "Line"
         , chooseShape Ellipse "Ellipse"
         , chooseShape Rectangle "Rectangle"
-        , propertyInput "name: " InputName name
-        , propertyInput "x pos: " InputXPos xPos 
-        , propertyInput "y pos: " InputYPos yPos
-        , propertyInput "width: " InputWidth width
-        , propertyInput "height: " InputHeight height
-        , propertyInput "color: " InputColor color
+        , propertyInput "name: " InputName model.inputName
+        , propertyInput "x pos: " InputXPos model.inputXPos
+        , propertyInput "y pos: " InputYPos model.inputYPos
+        , propertyInput "width: " InputWidth model.inputWidth
+        , propertyInput "height: " InputHeight model.inputHeight
+        , propertyInput "color: " InputColor model.inputColor
         ]
         
 
@@ -58,35 +58,35 @@ commandButtons =
         ]
 
 
-svgEllipse : String -> String -> String -> String -> String -> Int -> Svg Msg
-svgEllipse xPos yPos width height color id =
-    Svg.ellipse 
-        [ Sat.cx xPos
-        , Sat.cy yPos
-        , Sat.rx width
-        , Sat.ry height
-        , Sat.fill color 
-        , onClick <| SelectShape id
+svgEllipse : Shape -> Svg Msg
+svgEllipse shape =
+    Svg.ellipse
+        [ Sat.cx shape.xPos
+        , Sat.cy shape.yPos
+        , Sat.rx shape.width
+        , Sat.ry shape.height
+        , Sat.fill shape.color 
+        , onClick <| SelectShape shape.id
         ] []
 
-svgRect : String -> String -> String -> String -> String -> Int -> Svg Msg
-svgRect xPos yPos width height color id =
+svgRect : Shape -> Svg Msg
+svgRect shape =
     Svg.rect
-        [ Sat.x xPos
-        , Sat.y yPos
-        , Sat.width width
-        , Sat.height height
-        , Sat.fill color 
-        , onClick <| SelectShape id
+        [ Sat.x shape.xPos
+        , Sat.y shape.yPos
+        , Sat.width shape.width
+        , Sat.height shape.height
+        , Sat.fill shape.color 
+        , onClick <| SelectShape shape.id
         ] []
 
-svgLine : String -> String -> String -> String -> String -> Int -> Svg Msg
-svgLine xPos yPos width height color id =
+svgLine : Shape -> Svg Msg
+svgLine shape =
     Svg.line
-        [ Sat.x1 xPos
-        , Sat.y1 yPos
-        , Sat.x2 width
-        , Sat.y2 height
-        , Sat.stroke color
-        , onClick <| SelectShape id
+        [ Sat.x1 shape.xPos
+        , Sat.y1 shape.yPos
+        , Sat.x2 shape.width
+        , Sat.y2 shape.height
+        , Sat.stroke shape.color 
+        , onClick <| SelectShape shape.id
         ] []

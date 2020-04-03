@@ -23,22 +23,39 @@ getSelectedShape listToFilter id =
 
 convertToCode : Model -> String
 convertToCode model = 
-    if model.inputShapeType == Ellipse then
+    let 
+        st = model.inputShapeType
+        x = model.inputXPos
+        y = model.inputYPos
+        w = model.inputWidth
+        h = model.inputHeight
+        c = model.inputColor
+    in
+    if st == Ellipse then
         String.concat
-            [ "<ellipse cx=\'", model.inputXPos
-            , "\' cy=\'" ++ model.inputYPos
-            , "\' rx=\'" ++ model.inputWidth
-            , "\' ry=\'" ++ model.inputHeight
-            , "\' fill=\'" ++ model.inputColor
+            [ "<ellipse cx=\'", x
+            , "\' cy=\'" ++ y
+            , "\' rx=\'" ++ w
+            , "\' ry=\'" ++ h
+            , "\' fill=\'" ++ c
+            , "\'/>"
+            ]
+    else if st == Rectangle then
+        String.concat
+            [ "<rect x=\'", x
+            , "\' y=\'" ++ y
+            , "\' width=\'" ++ w
+            , "\' height=\'" ++ h
+            , "\' fill=\'" ++ c
             , "\'/>"
             ]
     else
         String.concat
-            [ "<rect x=\'", model.inputXPos
-            , "\' y=\'" ++ model.inputYPos
-            , "\' width=\'" ++ model.inputWidth
-            , "\' height=\'" ++ model.inputHeight
-            , "\' fill=\'" ++ model.inputColor
+            [ "<line x1=\'", x
+            , "\' y1=\'" ++ y
+            , "\' x2=\'" ++ w
+            , "\' y2=\'" ++ h
+            , "\' stroke=\'" ++ c
             , "\'/>"
             ]
 
@@ -47,21 +64,15 @@ convertToSvg listWithElements selectedShape =
     List.map (\shape ->
         if shape.shapeType == Ellipse then
             Svg.g []
-                [ svgEllipse
-                    shape.xPos shape.yPos shape.width 
-                    shape.height shape.color shape.id
+                [ svgEllipse shape
                 ]
         else if shape.shapeType == Rectangle then
             Svg.g []
-                [ svgRect 
-                    shape.xPos shape.yPos shape.width 
-                    shape.height shape.color shape.id
+                [ svgRect shape
                 ]
         else
             Svg.g []
-                [ svgLine
-                    shape.xPos shape.yPos shape.width 
-                    shape.height shape.color shape.id
+                [ svgLine shape
                 ]
         ) listWithElements
 
