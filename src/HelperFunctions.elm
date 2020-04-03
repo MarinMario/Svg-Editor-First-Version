@@ -8,7 +8,7 @@ import Html exposing (text, button, Html)
 import Html.Events exposing (onClick)
 import Html.Attributes as At
 
-import Components exposing (svgEllipse, svgRect)
+import Components exposing (svgEllipse, svgRect, svgLine)
 
 getSelectedShape : List Shape -> Int -> Shape
 getSelectedShape listToFilter id =
@@ -51,9 +51,15 @@ convertToSvg listWithElements selectedShape =
                     shape.xPos shape.yPos shape.width 
                     shape.height shape.color shape.id
                 ]
-        else
+        else if shape.shapeType == Rectangle then
             Svg.g []
                 [ svgRect 
+                    shape.xPos shape.yPos shape.width 
+                    shape.height shape.color shape.id
+                ]
+        else
+            Svg.g []
+                [ svgLine
                     shape.xPos shape.yPos shape.width 
                     shape.height shape.color shape.id
                 ]

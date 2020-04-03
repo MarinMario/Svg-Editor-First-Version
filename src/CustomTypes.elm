@@ -23,7 +23,10 @@ type alias Shape =
     , name : String
     }
 
-type ShapeType = Ellipse | Rectangle
+type ShapeType 
+    = Ellipse 
+    | Rectangle
+    | Line
 
 type Msg
     = CreateShape

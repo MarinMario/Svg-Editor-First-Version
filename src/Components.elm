@@ -28,7 +28,6 @@ applyFunction msg textToShow =
 
 selectShapeButton : Shape -> Html Msg
 selectShapeButton shape =
-    
     button [ onClick <| SelectShape shape.id, At.class "selectShapeButton" ] 
         [ text shape.name ]
 
@@ -36,6 +35,7 @@ propertyInputs : String -> String -> String -> String -> String -> String -> Htm
 propertyInputs name xPos yPos width height color =
     div [ At.class "propertyInputs" ] 
         [ text "type: "
+        , chooseShape Line "Line"
         , chooseShape Ellipse "Ellipse"
         , chooseShape Rectangle "Rectangle"
         , propertyInput "name: " InputName name
@@ -77,5 +77,16 @@ svgRect xPos yPos width height color id =
         , Sat.width width
         , Sat.height height
         , Sat.fill color 
+        , onClick <| SelectShape id
+        ] []
+
+svgLine : String -> String -> String -> String -> String -> Int -> Svg Msg
+svgLine xPos yPos width height color id =
+    Svg.line
+        [ Sat.x1 xPos
+        , Sat.y1 yPos
+        , Sat.x2 width
+        , Sat.y2 height
+        , Sat.stroke color
         , onClick <| SelectShape id
         ] []

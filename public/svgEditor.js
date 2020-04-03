@@ -5436,7 +5436,6 @@ var $author$project$Main$update = F2(
 					{inputName: name});
 		}
 	});
-var $elm$html$Html$br = _VirtualDom_node('br');
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -5482,6 +5481,7 @@ var $author$project$Components$applyFunction = F2(
 					$elm$html$Html$text(textToShow)
 				]));
 	});
+var $elm$html$Html$br = _VirtualDom_node('br');
 var $elm$html$Html$div = _VirtualDom_node('div');
 var $author$project$Components$commandButtons = A2(
 	$elm$html$Html$div,
@@ -5535,6 +5535,28 @@ var $author$project$Components$svgEllipse = F6(
 				]),
 			_List_Nil);
 	});
+var $elm$svg$Svg$line = $elm$svg$Svg$trustedNode('line');
+var $elm$svg$Svg$Attributes$stroke = _VirtualDom_attribute('stroke');
+var $elm$svg$Svg$Attributes$x1 = _VirtualDom_attribute('x1');
+var $elm$svg$Svg$Attributes$x2 = _VirtualDom_attribute('x2');
+var $elm$svg$Svg$Attributes$y1 = _VirtualDom_attribute('y1');
+var $elm$svg$Svg$Attributes$y2 = _VirtualDom_attribute('y2');
+var $author$project$Components$svgLine = F6(
+	function (xPos, yPos, width, height, color, id) {
+		return A2(
+			$elm$svg$Svg$line,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$x1(xPos),
+					$elm$svg$Svg$Attributes$y1(yPos),
+					$elm$svg$Svg$Attributes$x2(width),
+					$elm$svg$Svg$Attributes$y2(height),
+					$elm$svg$Svg$Attributes$stroke(color),
+					$elm$html$Html$Events$onClick(
+					$author$project$CustomTypes$SelectShape(id))
+				]),
+			_List_Nil);
+	});
 var $elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
 var $elm$svg$Svg$rect = $elm$svg$Svg$trustedNode('rect');
 var $elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
@@ -5567,13 +5589,19 @@ var $author$project$HelperFunctions$convertToSvg = F2(
 					_List_fromArray(
 						[
 							A6($author$project$Components$svgEllipse, shape.xPos, shape.yPos, shape.width, shape.height, shape.color, shape.id)
-						])) : A2(
+						])) : (_Utils_eq(shape.shapeType, $author$project$CustomTypes$Rectangle) ? A2(
 					$elm$svg$Svg$g,
 					_List_Nil,
 					_List_fromArray(
 						[
 							A6($author$project$Components$svgRect, shape.xPos, shape.yPos, shape.width, shape.height, shape.color, shape.id)
-						]));
+						])) : A2(
+					$elm$svg$Svg$g,
+					_List_Nil,
+					_List_fromArray(
+						[
+							A6($author$project$Components$svgLine, shape.xPos, shape.yPos, shape.width, shape.height, shape.color, shape.id)
+						])));
 			},
 			listWithElements);
 	});
@@ -5596,6 +5624,7 @@ var $author$project$CustomTypes$InputXPos = function (a) {
 var $author$project$CustomTypes$InputYPos = function (a) {
 	return {$: 'InputYPos', a: a};
 };
+var $author$project$CustomTypes$Line = {$: 'Line'};
 var $author$project$CustomTypes$InputShapeType = function (a) {
 	return {$: 'InputShapeType', a: a};
 };
@@ -5678,6 +5707,7 @@ var $author$project$Components$propertyInputs = F6(
 			_List_fromArray(
 				[
 					$elm$html$Html$text('type: '),
+					A2($author$project$Components$chooseShape, $author$project$CustomTypes$Line, 'Line'),
 					A2($author$project$Components$chooseShape, $author$project$CustomTypes$Ellipse, 'Ellipse'),
 					A2($author$project$Components$chooseShape, $author$project$CustomTypes$Rectangle, 'Rectangle'),
 					A3($author$project$Components$propertyInput, 'name: ', $author$project$CustomTypes$InputName, name),
@@ -5759,12 +5789,14 @@ var $author$project$Main$view = function (model) {
 					[
 						A2(
 						$elm$html$Html$div,
-						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('showSelected')
+							]),
 						_List_fromArray(
 							[
 								$elm$svg$Svg$text('Selected Shape: ' + model.inputName)
 							])),
-						A2($elm$html$Html$br, _List_Nil, _List_Nil),
 						A6($author$project$Components$propertyInputs, model.inputName, model.inputXPos, model.inputYPos, model.inputWidth, model.inputHeight, model.inputColor),
 						$author$project$Components$commandButtons,
 						A2(

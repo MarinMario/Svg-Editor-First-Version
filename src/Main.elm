@@ -146,8 +146,7 @@ view model =
         [ div [ At.class "canvas" ] [ svg [width "1000", height "600"]  svgShapes ]
         , h3 [ At.class "title", At.class "propertiesTitle" ] [ text "Properties" ]
         , div [ At.class "editor" ] 
-            [ div [] [text <| "Selected Shape: " ++ model.inputName]
-            , br [] []
+            [ div [ At.class "showSelected" ] [text <| "Selected Shape: " ++ model.inputName]
             , propertyInputs 
                 model.inputName model.inputXPos 
                 model.inputYPos model.inputWidth 
