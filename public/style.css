@@ -1,8 +1,13 @@
+div {
+    margin: 0px;
+}
+
 .app {
     display: grid;
 
     grid-template-areas: 
-        "b c c c c c c c c c c e"
+        "ts c tpe"
+        "b c e"
     ;
 }
 
@@ -37,6 +42,15 @@
     border: solid black 1px;
     padding: 1rem;
     text-align: center;
+    margin: 0px;
+}
+
+.propertiesTitle {
+    grid-area: tpe;
+}
+
+.shapesTitle {
+    grid-area: ts;
 }
 
 .propertyInputs {
@@ -46,4 +60,8 @@
 
 button {
     width: 100%;
+}
+
+.selectedShape {
+    border: solid 1rem black;
 }

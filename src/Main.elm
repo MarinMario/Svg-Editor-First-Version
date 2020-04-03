@@ -5,7 +5,7 @@ import Browser
 
 import Html exposing (Html, div, button, input, br, h3)
 import Html.Events exposing (onClick, onInput)
-import Html.Attributes exposing (value)
+import Html.Attributes as At
 
 import Svg exposing (Svg, svg, text)
 import Svg.Attributes exposing (..)
@@ -138,37 +138,23 @@ view model =
                 model.inputColor
         
         selectShapeButtons = 
-            List.map (\shape -> selectShapeButton shape.id shape.name) model.svgShapes
+            List.map (\shape -> selectShapeButton shape) model.svgShapes
         
     in
     
-    div [ Html.Attributes.class "app" ] 
-        [ div [ Html.Attributes.class "canvas" ] 
-            [ svg [width "1000", height "600"]  svgShapes ]
-        , div [ Html.Attributes.class "editor" ] 
-            [ h3 [ Html.Attributes.class "title" ] [ text "Properties Editor" ]
-            , div [] [text <| "Selected Shape: " ++ model.inputName]
+    div [ At.class "app" ] 
+        [ div [ At.class "canvas" ] [ svg [width "1000", height "600"]  svgShapes ]
+        , h3 [ At.class "title", At.class "propertiesTitle" ] [ text "Properties" ]
+        , div [ At.class "editor" ] 
+            [ div [] [text <| "Selected Shape: " ++ model.inputName]
             , br [] []
-            , div [ Html.Attributes.class "propertyInputs" ] 
-                [ text "type: "
-                , chooseShape Ellipse "Ellipse"
-                , chooseShape Rectangle "Rectangle"
-                , propertyInput "name: " InputName model.inputName
-                , propertyInput "x pos: " InputXPos model.inputXPos 
-                , propertyInput "y pos: " InputYPos model.inputYPos
-                , propertyInput "width: " InputWidth model.inputWidth
-                , propertyInput "height: " InputHeight model.inputHeight
-                , propertyInput "color: " InputColor model.inputColor
-                ]
-            , applyFunction EditShape "Edit Shape"
-            , br [] []
-            , applyFunction CreateShape "Create Shape"
-            , br [] []
-            , applyFunction RemoveShape "Remove Shape"
-            , div [ Html.Attributes.class "convertedCode" ] [ text convertedCode ]
+            , propertyInputs 
+                model.inputName model.inputXPos 
+                model.inputYPos model.inputWidth 
+                model.inputHeight model.inputColor
+            , commandButtons
+            , div [ At.class "convertedCode" ] [ text convertedCode ]
             ]
-        , div [ Html.Attributes.class "selectShapeButtons" ] 
-            [ h3 [ Html.Attributes.class "title" ] [ text "Shapes" ]
-            , div [] selectShapeButtons
-            ]
+        , h3 [ At.class "title", At.class "shapesTitle" ] [ text "Shapes" ]
+        , div [ At.class "selectShapeButtons" ] selectShapeButtons
         ]

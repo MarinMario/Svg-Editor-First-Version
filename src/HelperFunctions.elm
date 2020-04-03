@@ -2,11 +2,13 @@ module HelperFunctions exposing (..)
 
 import CustomTypes exposing (..)
 import Svg exposing (Svg)
-import Svg.Attributes exposing (..)
+import Svg.Attributes as Sat
 
 import Html exposing (text, button, Html)
 import Html.Events exposing (onClick)
-import Html.Attributes exposing (class)
+import Html.Attributes as At
+
+import Components exposing (svgEllipse, svgRect)
 
 getSelectedShape : List Shape -> Int -> Shape
 getSelectedShape listToFilter id =
@@ -42,33 +44,18 @@ convertToCode shapeType xPos yPos width height color =
 
 convertToSvg : List Shape -> Int -> List (Svg Msg)
 convertToSvg listWithElements selectedShape = 
-    List.map (\shape -> 
+    List.map (\shape ->
         if shape.shapeType == Ellipse then
-            Svg.ellipse 
-                [ cx shape.xPos
-                , cy shape.yPos
-                , rx shape.width
-                , ry shape.height
-                , fill shape.color 
-                , onClick <| SelectShape shape.id
-                , stroke "black",
-                if selectedShape == shape.id then
-                    strokeWidth "5"
-                else
-                    strokeWidth "0"
-                ] []
+            Svg.g []
+                [ svgEllipse
+                    shape.xPos shape.yPos shape.width 
+                    shape.height shape.color shape.id
+                ]
         else
-            Svg.rect
-                [ x shape.xPos
-                , y shape.yPos
-                , Svg.Attributes.width shape.width
-                , Svg.Attributes.height shape.height
-                , fill shape.color 
-                , onClick <| SelectShape shape.id
-                , stroke "black",
-                if selectedShape == shape.id then
-                    strokeWidth "5"
-                else
-                    strokeWidth "0"
-                ] []
+            Svg.g []
+                [ svgRect 
+                    shape.xPos shape.yPos shape.width 
+                    shape.height shape.color shape.id
+                ]
         ) listWithElements
+
