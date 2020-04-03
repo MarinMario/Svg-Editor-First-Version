@@ -5500,14 +5500,13 @@ var $author$project$Components$commandButtons = A2(
 var $elm$core$String$concat = function (strings) {
 	return A2($elm$core$String$join, '', strings);
 };
-var $author$project$HelperFunctions$convertToCode = F6(
-	function (shapeType, xPos, yPos, width, height, color) {
-		return _Utils_eq(shapeType, $author$project$CustomTypes$Ellipse) ? $elm$core$String$concat(
-			_List_fromArray(
-				['<ellipse cx=\'', xPos, '\' cy=\'' + yPos, '\' rx=\'' + width, '\' ry=\'' + height, '\' fill=\'' + color, '\'/>'])) : $elm$core$String$concat(
-			_List_fromArray(
-				['<rect x=\'', xPos, '\' y=\'' + yPos, '\' width=\'' + width, '\' height=\'' + height, '\' fill=\'' + color, '\'/>']));
-	});
+var $author$project$HelperFunctions$convertToCode = function (model) {
+	return _Utils_eq(model.inputShapeType, $author$project$CustomTypes$Ellipse) ? $elm$core$String$concat(
+		_List_fromArray(
+			['<ellipse cx=\'', model.inputXPos, '\' cy=\'' + model.inputYPos, '\' rx=\'' + model.inputWidth, '\' ry=\'' + model.inputHeight, '\' fill=\'' + model.inputColor, '\'/>'])) : $elm$core$String$concat(
+		_List_fromArray(
+			['<rect x=\'', model.inputXPos, '\' y=\'' + model.inputYPos, '\' width=\'' + model.inputWidth, '\' height=\'' + model.inputHeight, '\' fill=\'' + model.inputColor, '\'/>']));
+};
 var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
 var $elm$svg$Svg$g = $elm$svg$Svg$trustedNode('g');
 var $author$project$CustomTypes$SelectShape = function (a) {
@@ -5742,7 +5741,6 @@ var $author$project$Main$view = function (model) {
 			return $author$project$Components$selectShapeButton(shape);
 		},
 		model.svgShapes);
-	var convertedCode = A6($author$project$HelperFunctions$convertToCode, model.inputShapeType, model.inputXPos, model.inputYPos, model.inputWidth, model.inputHeight, model.inputColor);
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -5807,7 +5805,8 @@ var $author$project$Main$view = function (model) {
 							]),
 						_List_fromArray(
 							[
-								$elm$svg$Svg$text(convertedCode)
+								$elm$svg$Svg$text(
+								$author$project$HelperFunctions$convertToCode(model))
 							]))
 					])),
 				A2(

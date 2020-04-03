@@ -127,15 +127,7 @@ view model =
             convertToSvg
                 model.svgShapes
                 model.selectedShape
-        
-        convertedCode =
-            convertToCode
-                model.inputShapeType
-                model.inputXPos
-                model.inputYPos
-                model.inputWidth
-                model.inputHeight
-                model.inputColor
+
         
         selectShapeButtons = 
             List.map (\shape -> selectShapeButton shape) model.svgShapes
@@ -152,7 +144,7 @@ view model =
                 model.inputYPos model.inputWidth 
                 model.inputHeight model.inputColor
             , commandButtons
-            , div [ At.class "convertedCode" ] [ text convertedCode ]
+            , div [ At.class "convertedCode" ] [ text <| convertToCode model ]
             ]
         , h3 [ At.class "title", At.class "shapesTitle" ] [ text "Shapes" ]
         , div [ At.class "selectShapeButtons" ] selectShapeButtons

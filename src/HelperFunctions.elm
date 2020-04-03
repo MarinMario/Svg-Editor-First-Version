@@ -21,24 +21,24 @@ getSelectedShape listToFilter id =
         Nothing -> 
             Shape 1 Ellipse "50" "50" "50" "50" "blue" "Shape 1"
 
-convertToCode : ShapeType -> String -> String -> String -> String -> String -> String
-convertToCode shapeType xPos yPos width height color = 
-    if shapeType == Ellipse then
+convertToCode : Model -> String
+convertToCode model = 
+    if model.inputShapeType == Ellipse then
         String.concat
-            [ "<ellipse cx=\'", xPos
-            , "\' cy=\'" ++ yPos
-            , "\' rx=\'" ++ width
-            , "\' ry=\'" ++ height
-            , "\' fill=\'" ++ color
+            [ "<ellipse cx=\'", model.inputXPos
+            , "\' cy=\'" ++ model.inputYPos
+            , "\' rx=\'" ++ model.inputWidth
+            , "\' ry=\'" ++ model.inputHeight
+            , "\' fill=\'" ++ model.inputColor
             , "\'/>"
             ]
-    else 
+    else
         String.concat
-            [ "<rect x=\'", xPos
-            , "\' y=\'" ++ yPos
-            , "\' width=\'" ++ width
-            , "\' height=\'" ++ height
-            , "\' fill=\'" ++ color
+            [ "<rect x=\'", model.inputXPos
+            , "\' y=\'" ++ model.inputYPos
+            , "\' width=\'" ++ model.inputWidth
+            , "\' height=\'" ++ model.inputHeight
+            , "\' fill=\'" ++ model.inputColor
             , "\'/>"
             ]
 
