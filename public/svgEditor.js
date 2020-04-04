@@ -4473,30 +4473,57 @@ var $elm$core$Basics$EQ = {$: 'EQ'};
 var $elm$core$Basics$GT = {$: 'GT'};
 var $elm$core$Basics$LT = {$: 'LT'};
 var $author$project$CustomTypes$Ellipse = {$: 'Ellipse'};
-var $author$project$CustomTypes$Model = F9(
-	function (svgShapes, inputShapeType, inputXPos, inputYPos, inputWidth, inputHeight, inputColor, selectedShape, inputName) {
-		return {inputColor: inputColor, inputHeight: inputHeight, inputName: inputName, inputShapeType: inputShapeType, inputWidth: inputWidth, inputXPos: inputXPos, inputYPos: inputYPos, selectedShape: selectedShape, svgShapes: svgShapes};
-	});
+var $author$project$CustomTypes$Model = function (svgShapes) {
+	return function (inputShapeType) {
+		return function (inputXPos) {
+			return function (inputYPos) {
+				return function (inputWidth) {
+					return function (inputHeight) {
+						return function (inputColor) {
+							return function (selectedShape) {
+								return function (inputName) {
+									return function (inputStrokeWidth) {
+										return function (inputStrokeColor) {
+											return {inputColor: inputColor, inputHeight: inputHeight, inputName: inputName, inputShapeType: inputShapeType, inputStrokeColor: inputStrokeColor, inputStrokeWidth: inputStrokeWidth, inputWidth: inputWidth, inputXPos: inputXPos, inputYPos: inputYPos, selectedShape: selectedShape, svgShapes: svgShapes};
+										};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
 var $author$project$CustomTypes$Rectangle = {$: 'Rectangle'};
-var $author$project$CustomTypes$Shape = F8(
-	function (id, shapeType, xPos, yPos, width, height, color, name) {
-		return {color: color, height: height, id: id, name: name, shapeType: shapeType, width: width, xPos: xPos, yPos: yPos};
-	});
-var $author$project$Main$init = A9(
-	$author$project$CustomTypes$Model,
+var $author$project$CustomTypes$Shape = function (id) {
+	return function (shapeType) {
+		return function (xPos) {
+			return function (yPos) {
+				return function (width) {
+					return function (height) {
+						return function (color) {
+							return function (name) {
+								return function (strokeWidth) {
+									return function (strokeColor) {
+										return {color: color, height: height, id: id, name: name, shapeType: shapeType, strokeColor: strokeColor, strokeWidth: strokeWidth, width: width, xPos: xPos, yPos: yPos};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
+var $author$project$Main$init = $author$project$CustomTypes$Model(
 	_List_fromArray(
 		[
-			A8($author$project$CustomTypes$Shape, 1, $author$project$CustomTypes$Ellipse, '500', '300', '50', '50', 'blue', 'Shape 1'),
-			A8($author$project$CustomTypes$Shape, 2, $author$project$CustomTypes$Rectangle, '100', '100', '100', '50', 'red', 'Shape 2')
-		]),
-	$author$project$CustomTypes$Ellipse,
-	'50',
-	'50',
-	'50',
-	'50',
-	'blue',
-	1,
-	'Shape 1');
+			$author$project$CustomTypes$Shape(1)($author$project$CustomTypes$Ellipse)('500')('300')('50')('50')('blue')('Shape 1')('3')('black'),
+			$author$project$CustomTypes$Shape(2)($author$project$CustomTypes$Rectangle)('100')('100')('100')('50')('red')('Shape 2')('10')('black')
+		]))($author$project$CustomTypes$Ellipse)('50')('50')('50')('50')('blue')(1)('Shape 1')('5')('black');
 var $elm$core$Result$Err = function (a) {
 	return {$: 'Err', a: a};
 };
@@ -5337,7 +5364,7 @@ var $author$project$HelperFunctions$getSelectedShape = F2(
 			var shape = filterList.a;
 			return shape;
 		} else {
-			return A8($author$project$CustomTypes$Shape, 1, $author$project$CustomTypes$Ellipse, '50', '50', '50', '50', 'blue', 'Shape 1');
+			return $author$project$CustomTypes$Shape(1)($author$project$CustomTypes$Ellipse)('50')('50')('50')('50')('blue')('Shape 1')('5')('red');
 		}
 	});
 var $elm$core$Array$length = function (_v0) {
@@ -5370,7 +5397,7 @@ var $author$project$Main$update = F2(
 							model.svgShapes,
 							_List_fromArray(
 								[
-									A8($author$project$CustomTypes$Shape, nextId, model.inputShapeType, model.inputXPos, model.inputYPos, model.inputWidth, model.inputHeight, model.inputColor, model.inputName)
+									$author$project$CustomTypes$Shape(nextId)(model.inputShapeType)(model.inputXPos)(model.inputYPos)(model.inputWidth)(model.inputHeight)(model.inputColor)(model.inputName)(model.inputStrokeWidth)(model.inputStrokeColor)
 								]))
 					});
 			case 'InputShapeType':
@@ -5408,7 +5435,7 @@ var $author$project$Main$update = F2(
 				var selectedShape = A2($author$project$HelperFunctions$getSelectedShape, model.svgShapes, id);
 				return _Utils_update(
 					model,
-					{inputColor: selectedShape.color, inputHeight: selectedShape.height, inputName: selectedShape.name, inputShapeType: selectedShape.shapeType, inputWidth: selectedShape.width, inputXPos: selectedShape.xPos, inputYPos: selectedShape.yPos, selectedShape: id});
+					{inputColor: selectedShape.color, inputHeight: selectedShape.height, inputName: selectedShape.name, inputShapeType: selectedShape.shapeType, inputStrokeColor: selectedShape.strokeColor, inputStrokeWidth: selectedShape.strokeWidth, inputWidth: selectedShape.width, inputXPos: selectedShape.xPos, inputYPos: selectedShape.yPos, selectedShape: id});
 			case 'RemoveShape':
 				var removedShapes = A2(
 					$elm$core$List$filter,
@@ -5423,17 +5450,27 @@ var $author$project$Main$update = F2(
 				var editedShapes = A2(
 					$elm$core$List$map,
 					function (shape) {
-						return _Utils_eq(shape.id, model.selectedShape) ? A8($author$project$CustomTypes$Shape, shape.id, model.inputShapeType, model.inputXPos, model.inputYPos, model.inputWidth, model.inputHeight, model.inputColor, model.inputName) : shape;
+						return _Utils_eq(shape.id, model.selectedShape) ? $author$project$CustomTypes$Shape(shape.id)(model.inputShapeType)(model.inputXPos)(model.inputYPos)(model.inputWidth)(model.inputHeight)(model.inputColor)(model.inputName)(model.inputStrokeWidth)(model.inputStrokeColor) : shape;
 					},
 					model.svgShapes);
 				return _Utils_update(
 					model,
 					{svgShapes: editedShapes});
-			default:
+			case 'InputName':
 				var name = msg.a;
 				return _Utils_update(
 					model,
 					{inputName: name});
+			case 'InputStrokeWidth':
+				var width = msg.a;
+				return _Utils_update(
+					model,
+					{inputStrokeWidth: width});
+			default:
+				var color = msg.a;
+				return _Utils_update(
+					model,
+					{inputStrokeColor: color});
 		}
 	});
 var $elm$json$Json$Encode$string = _Json_wrap;
@@ -5526,6 +5563,8 @@ var $elm$svg$Svg$ellipse = $elm$svg$Svg$trustedNode('ellipse');
 var $elm$svg$Svg$Attributes$fill = _VirtualDom_attribute('fill');
 var $elm$svg$Svg$Attributes$rx = _VirtualDom_attribute('rx');
 var $elm$svg$Svg$Attributes$ry = _VirtualDom_attribute('ry');
+var $elm$svg$Svg$Attributes$stroke = _VirtualDom_attribute('stroke');
+var $elm$svg$Svg$Attributes$strokeWidth = _VirtualDom_attribute('stroke-width');
 var $author$project$Components$svgEllipse = function (shape) {
 	return A2(
 		$elm$svg$Svg$ellipse,
@@ -5536,13 +5575,14 @@ var $author$project$Components$svgEllipse = function (shape) {
 				$elm$svg$Svg$Attributes$rx(shape.width),
 				$elm$svg$Svg$Attributes$ry(shape.height),
 				$elm$svg$Svg$Attributes$fill(shape.color),
+				$elm$svg$Svg$Attributes$stroke(shape.strokeColor),
+				$elm$svg$Svg$Attributes$strokeWidth(shape.strokeWidth),
 				$elm$html$Html$Events$onClick(
 				$author$project$CustomTypes$SelectShape(shape.id))
 			]),
 		_List_Nil);
 };
 var $elm$svg$Svg$line = $elm$svg$Svg$trustedNode('line');
-var $elm$svg$Svg$Attributes$stroke = _VirtualDom_attribute('stroke');
 var $elm$svg$Svg$Attributes$x1 = _VirtualDom_attribute('x1');
 var $elm$svg$Svg$Attributes$x2 = _VirtualDom_attribute('x2');
 var $elm$svg$Svg$Attributes$y1 = _VirtualDom_attribute('y1');
@@ -5556,7 +5596,8 @@ var $author$project$Components$svgLine = function (shape) {
 				$elm$svg$Svg$Attributes$y1(shape.yPos),
 				$elm$svg$Svg$Attributes$x2(shape.width),
 				$elm$svg$Svg$Attributes$y2(shape.height),
-				$elm$svg$Svg$Attributes$stroke(shape.color),
+				$elm$svg$Svg$Attributes$stroke(shape.strokeColor),
+				$elm$svg$Svg$Attributes$strokeWidth(shape.strokeWidth),
 				$elm$html$Html$Events$onClick(
 				$author$project$CustomTypes$SelectShape(shape.id))
 			]),
@@ -5577,6 +5618,8 @@ var $author$project$Components$svgRect = function (shape) {
 				$elm$svg$Svg$Attributes$width(shape.width),
 				$elm$svg$Svg$Attributes$height(shape.height),
 				$elm$svg$Svg$Attributes$fill(shape.color),
+				$elm$svg$Svg$Attributes$stroke(shape.strokeColor),
+				$elm$svg$Svg$Attributes$strokeWidth(shape.strokeWidth),
 				$elm$html$Html$Events$onClick(
 				$author$project$CustomTypes$SelectShape(shape.id))
 			]),
@@ -5618,6 +5661,12 @@ var $author$project$CustomTypes$InputHeight = function (a) {
 };
 var $author$project$CustomTypes$InputName = function (a) {
 	return {$: 'InputName', a: a};
+};
+var $author$project$CustomTypes$InputStrokeColor = function (a) {
+	return {$: 'InputStrokeColor', a: a};
+};
+var $author$project$CustomTypes$InputStrokeWidth = function (a) {
+	return {$: 'InputStrokeWidth', a: a};
 };
 var $author$project$CustomTypes$InputWidth = function (a) {
 	return {$: 'InputWidth', a: a};
@@ -5718,7 +5767,9 @@ var $author$project$Components$propertyInputs = function (model) {
 				A3($author$project$Components$propertyInput, 'y pos: ', $author$project$CustomTypes$InputYPos, model.inputYPos),
 				A3($author$project$Components$propertyInput, 'width: ', $author$project$CustomTypes$InputWidth, model.inputWidth),
 				A3($author$project$Components$propertyInput, 'height: ', $author$project$CustomTypes$InputHeight, model.inputHeight),
-				A3($author$project$Components$propertyInput, 'color: ', $author$project$CustomTypes$InputColor, model.inputColor)
+				A3($author$project$Components$propertyInput, 'fill color: ', $author$project$CustomTypes$InputColor, model.inputColor),
+				A3($author$project$Components$propertyInput, 'stroke width: ', $author$project$CustomTypes$InputStrokeWidth, model.inputStrokeWidth),
+				A3($author$project$Components$propertyInput, 'stroke color: ', $author$project$CustomTypes$InputStrokeColor, model.inputStrokeColor)
 			]));
 };
 var $author$project$Components$selectShapeButton = function (shape) {

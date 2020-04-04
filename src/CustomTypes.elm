@@ -10,6 +10,8 @@ type alias Model =
     , inputColor : String
     , selectedShape : Int
     , inputName : String
+    , inputStrokeWidth : String
+    , inputStrokeColor : String
     }
 
 type alias Shape =
@@ -21,6 +23,8 @@ type alias Shape =
     , height : String
     , color : String
     , name : String
+    , strokeWidth : String
+    , strokeColor : String
     }
 
 type ShapeType 
@@ -40,3 +44,5 @@ type Msg
     | RemoveShape
     | EditShape
     | InputName String
+    | InputStrokeColor String
+    | InputStrokeWidth String

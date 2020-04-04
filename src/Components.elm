@@ -43,7 +43,9 @@ propertyInputs model =
         , propertyInput "y pos: " InputYPos model.inputYPos
         , propertyInput "width: " InputWidth model.inputWidth
         , propertyInput "height: " InputHeight model.inputHeight
-        , propertyInput "color: " InputColor model.inputColor
+        , propertyInput "fill color: " InputColor model.inputColor
+        , propertyInput "stroke width: " InputStrokeWidth model.inputStrokeWidth
+        , propertyInput "stroke color: " InputStrokeColor model.inputStrokeColor
         ]
         
 
@@ -66,6 +68,8 @@ svgEllipse shape =
         , Sat.rx shape.width
         , Sat.ry shape.height
         , Sat.fill shape.color 
+        , Sat.stroke shape.strokeColor
+        , Sat.strokeWidth shape.strokeWidth
         , onClick <| SelectShape shape.id
         ] []
 
@@ -77,6 +81,8 @@ svgRect shape =
         , Sat.width shape.width
         , Sat.height shape.height
         , Sat.fill shape.color 
+        , Sat.stroke shape.strokeColor
+        , Sat.strokeWidth shape.strokeWidth
         , onClick <| SelectShape shape.id
         ] []
 
@@ -87,6 +93,7 @@ svgLine shape =
         , Sat.y1 shape.yPos
         , Sat.x2 shape.width
         , Sat.y2 shape.height
-        , Sat.stroke shape.color 
+        , Sat.stroke shape.strokeColor
+        , Sat.strokeWidth shape.strokeWidth
         , onClick <| SelectShape shape.id
         ] []

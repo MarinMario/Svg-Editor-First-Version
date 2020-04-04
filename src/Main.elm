@@ -26,10 +26,10 @@ main =
 init : Model
 init = 
     Model 
-        [ Shape 1 Ellipse "500" "300" "50" "50" "blue" "Shape 1"
-        , Shape 2 Rectangle "100" "100" "100" "50" "red" "Shape 2"
+        [ Shape 1 Ellipse "500" "300" "50" "50" "blue" "Shape 1" "3" "black"
+        , Shape 2 Rectangle "100" "100" "100" "50" "red" "Shape 2" "10" "black"
         ] 
-        Ellipse "50" "50" "50" "50" "blue" 1 "Shape 1"
+        Ellipse "50" "50" "50" "50" "blue" 1 "Shape 1" "5" "black"
 
 update : Msg -> Model -> Model
 update msg model =
@@ -54,6 +54,7 @@ update msg model =
                     model.inputXPos model.inputYPos 
                     model.inputWidth model.inputHeight
                     model.inputColor model.inputName
+                    model.inputStrokeWidth model.inputStrokeColor
                     ] 
             , selectedShape = nextId
             }
@@ -80,7 +81,6 @@ update msg model =
             let
                 selectedShape = getSelectedShape model.svgShapes id
             in
-            
             { model 
             | selectedShape = id
             , inputShapeType = selectedShape.shapeType
@@ -90,6 +90,8 @@ update msg model =
             , inputXPos = selectedShape.xPos
             , inputYPos = selectedShape.yPos
             , inputName = selectedShape.name
+            , inputStrokeColor = selectedShape.strokeColor
+            , inputStrokeWidth = selectedShape.strokeWidth
             }
 
         RemoveShape ->
@@ -108,6 +110,7 @@ update msg model =
                                 model.inputXPos model.inputYPos 
                                 model.inputWidth model.inputHeight
                                 model.inputColor model.inputName
+                                model.inputStrokeWidth model.inputStrokeColor
                         else 
                             shape
                         ) model.svgShapes
@@ -117,6 +120,13 @@ update msg model =
 
         InputName name ->
             { model | inputName = name }
+        
+        InputStrokeWidth width ->
+            { model | inputStrokeWidth = width }
+        
+        InputStrokeColor color ->
+            { model | inputStrokeColor = color }
+        
 
 
 

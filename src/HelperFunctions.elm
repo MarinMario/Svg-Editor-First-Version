@@ -19,7 +19,7 @@ getSelectedShape listToFilter id =
         Just shape ->
             shape
         Nothing -> 
-            Shape 1 Ellipse "50" "50" "50" "50" "blue" "Shape 1"
+            Shape 1 Ellipse "50" "50" "50" "50" "blue" "Shape 1" "5" "red"
 
 convertToCode : Model -> String
 convertToCode model = 
