@@ -8,7 +8,7 @@ import Html.Events exposing (onClick, onInput)
 import Html.Attributes as At
 
 import Svg exposing (Svg, svg, text)
-import Svg.Attributes exposing (..)
+import Svg.Attributes as Sag
 
 import Components exposing (..)
 import CustomTypes exposing (..)
@@ -146,7 +146,7 @@ view model =
     in
     
     div [ At.class "app" ] 
-        [ div [ At.class "canvas" ] [ svg [width "1000", height "600"]  svgShapes ]
+        [ svg [ Sag.class "canvas"]  svgShapes
         , h3 [ At.class "title", At.class "propertiesTitle" ] [ text "Properties" ]
         , div [ At.class "editor" ] 
             [ div [ At.class "showSelected" ] [text <| "Selected Shape: " ++ selectedShape.name]

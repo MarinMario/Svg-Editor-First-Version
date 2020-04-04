@@ -5482,6 +5482,7 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 			$elm$json$Json$Encode$string(string));
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
+var $elm$svg$Svg$Attributes$class = _VirtualDom_attribute('class');
 var $author$project$CustomTypes$CreateShape = {$: 'CreateShape'};
 var $author$project$CustomTypes$EditShape = {$: 'EditShape'};
 var $author$project$CustomTypes$RemoveShape = {$: 'RemoveShape'};
@@ -5806,22 +5807,12 @@ var $author$project$Main$view = function (model) {
 		_List_fromArray(
 			[
 				A2(
-				$elm$html$Html$div,
+				$elm$svg$Svg$svg,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('canvas')
+						$elm$svg$Svg$Attributes$class('canvas')
 					]),
-				_List_fromArray(
-					[
-						A2(
-						$elm$svg$Svg$svg,
-						_List_fromArray(
-							[
-								$elm$svg$Svg$Attributes$width('1000'),
-								$elm$svg$Svg$Attributes$height('600')
-							]),
-						svgShapes)
-					])),
+				svgShapes),
 				A2(
 				$elm$html$Html$h3,
 				_List_fromArray(

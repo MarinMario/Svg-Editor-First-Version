@@ -5,23 +5,31 @@
         "ts c tpe"
         "b c e"
     ;
+    height: 80vh;
 }
 
 .editor {
     border: solid 1px black;
     grid-area: e;
     padding: 1rem;
+    max-height: calc(100vh - 50px);
+    overflow-y: auto;
+    width: 15vw;
+    height: fit-content;
 }
 
 .canvas {
-    border: solid 1px black;
     grid-area: c;
+    border: solid 1px black;
+    height: 100vh;
+    width: 70vw;
 }
 
 .selectShapeButtons {
     border: solid 1px black;
     grid-area: b;
-    padding: 1rem;
+    overflow-y: scroll;
+    height: fit-content;
 }
 
 .selectShapeButtons > button {
@@ -36,9 +44,10 @@
 
 .title {
     border: solid black 1px;
-    padding: 1rem;
     text-align: center;
+    padding: 1rem;
     margin: 0px;
+    height: auto;
 }
 
 .propertiesTitle {
@@ -53,6 +62,11 @@
     border: 1px solid black;
     padding: 1rem;
     text-align: center;
+}
+
+.propertyInputs {
+    overflow-y: scroll;
+    max-height: 20rem;
 }
 
 button {
