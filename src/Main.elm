@@ -142,13 +142,14 @@ view model =
         selectShapeButtons = 
             List.map (\shape -> selectShapeButton shape) model.svgShapes
         
+        selectedShape = getSelectedShape model.svgShapes model.selectedShape
     in
     
     div [ At.class "app" ] 
         [ div [ At.class "canvas" ] [ svg [width "1000", height "600"]  svgShapes ]
         , h3 [ At.class "title", At.class "propertiesTitle" ] [ text "Properties" ]
         , div [ At.class "editor" ] 
-            [ div [ At.class "showSelected" ] [text <| "Selected Shape: " ++ model.inputName]
+            [ div [ At.class "showSelected" ] [text <| "Selected Shape: " ++ selectedShape.name]
             , propertyInputs model
             , commandButtons
             , div [ At.class "convertedCode" ] [ text <| convertToCode model ]

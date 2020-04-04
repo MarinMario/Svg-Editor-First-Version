@@ -5790,6 +5790,7 @@ var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');
 var $elm$svg$Svg$text = $elm$virtual_dom$VirtualDom$text;
 var $author$project$Main$view = function (model) {
 	var svgShapes = A2($author$project$HelperFunctions$convertToSvg, model.svgShapes, model.selectedShape);
+	var selectedShape = A2($author$project$HelperFunctions$getSelectedShape, model.svgShapes, model.selectedShape);
 	var selectShapeButtons = A2(
 		$elm$core$List$map,
 		function (shape) {
@@ -5848,7 +5849,7 @@ var $author$project$Main$view = function (model) {
 							]),
 						_List_fromArray(
 							[
-								$elm$svg$Svg$text('Selected Shape: ' + model.inputName)
+								$elm$svg$Svg$text('Selected Shape: ' + selectedShape.name)
 							])),
 						$author$project$Components$propertyInputs(model),
 						$author$project$Components$commandButtons,
