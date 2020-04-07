@@ -1,7 +1,7 @@
 module Components exposing (..)
 
 import Html exposing (Html, div, input, br, button, text)
-import Html.Events exposing (onInput, onClick)
+import Html.Events exposing (onInput, onClick, onMouseDown)
 import Html.Attributes as At
 
 import Svg exposing (Svg)
@@ -9,6 +9,7 @@ import Svg.Attributes as Sat
 
 import CustomTypes exposing (Msg(..), ShapeType(..), Shape, Model)
 
+import Html.Events.Extra.Mouse as Mouse
 
 propertyInput : String -> (String -> Msg) -> String -> Html Msg
 propertyInput theText theInput theValue =
@@ -60,8 +61,8 @@ commandButtons =
         ]
 
 
-svgEllipse : Shape -> Svg Msg
-svgEllipse shape =
+svgEllipse : Shape -> Model -> Svg Msg
+svgEllipse shape model =
     Svg.ellipse
         [ Sat.cx shape.xPos
         , Sat.cy shape.yPos
@@ -70,24 +71,24 @@ svgEllipse shape =
         , Sat.fill shape.color 
         , Sat.stroke shape.strokeColor
         , Sat.strokeWidth shape.strokeWidth
-        , onClick <| SelectShape shape.id
+        , mouseDownEvent shape model
         ] []
 
-svgRect : Shape -> Svg Msg
-svgRect shape =
+svgRect : Shape -> Model -> Svg Msg
+svgRect shape model =
     Svg.rect
         [ Sat.x shape.xPos
         , Sat.y shape.yPos
         , Sat.width shape.width
         , Sat.height shape.height
-        , Sat.fill shape.color 
+        , Sat.fill shape.color
         , Sat.stroke shape.strokeColor
         , Sat.strokeWidth shape.strokeWidth
-        , onClick <| SelectShape shape.id
+        , mouseDownEvent shape model
         ] []
 
-svgLine : Shape -> Svg Msg
-svgLine shape =
+svgLine : Shape -> Model -> Svg Msg
+svgLine shape model =
     Svg.line
         [ Sat.x1 shape.xPos
         , Sat.y1 shape.yPos
@@ -95,5 +96,12 @@ svgLine shape =
         , Sat.y2 shape.height
         , Sat.stroke shape.strokeColor
         , Sat.strokeWidth shape.strokeWidth
-        , onClick <| SelectShape shape.id
+        , mouseDownEvent shape model
         ] []
+
+mouseDownEvent shape model=
+    onMouseDown <| 
+        if model.selectedShape == shape.id then
+            ShouldDragShape True
+        else
+            SelectShape shape.id

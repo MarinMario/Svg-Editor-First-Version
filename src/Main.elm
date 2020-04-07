@@ -14,6 +14,8 @@ import Components exposing (..)
 import CustomTypes exposing (..)
 import HelperFunctions exposing (..)
 
+import Html.Events.Extra.Mouse as Mouse
+
 
 main : Program () Model Msg
 main =
@@ -29,7 +31,7 @@ init =
         [ Shape 1 Ellipse "500" "300" "50" "50" "blue" "Shape 1" "3" "black"
         , Shape 2 Rectangle "100" "100" "100" "50" "red" "Shape 2" "10" "black"
         ] 
-        Ellipse "50" "50" "50" "50" "blue" 1 "Shape 1" "5" "black"
+        Ellipse "50" "50" "50" "50" "blue" 1 "Shape 1" "5" "black" (0, 0) False
 
 update : Msg -> Model -> Model
 update msg model =
@@ -41,7 +43,6 @@ update msg model =
                     shape.id + 1
                 Nothing ->
                     1
-            
     in
     
     case msg of 
@@ -77,7 +78,7 @@ update msg model =
         InputColor color ->
             { model | inputColor = color }
 
-        SelectShape id->
+        SelectShape id ->
             let
                 selectedShape = getSelectedShape model.svgShapes id
             in
@@ -111,7 +112,7 @@ update msg model =
                                 model.inputWidth model.inputHeight
                                 model.inputColor model.inputName
                                 model.inputStrokeWidth model.inputStrokeColor
-                        else 
+                        else
                             shape
                         ) model.svgShapes
             in
@@ -127,26 +128,40 @@ update msg model =
         InputStrokeColor color ->
             { model | inputStrokeColor = color }
         
-
+        MouseMove position->
+            { model
+            | mousePos = position
+            , inputXPos =
+                if model.dragSelectedShape then 
+                   String.fromFloat <| Tuple.first model.mousePos 
+                else model.inputXPos
+            , inputYPos =
+                if model.dragSelectedShape then 
+                   String.fromFloat <| Tuple.second model.mousePos 
+                else model.inputYPos
+            }
+        
+        ShouldDragShape bool ->
+            { model | dragSelectedShape = bool }
 
 
 view : Model -> Html Msg
 view model =
     let
-        svgShapes = 
-            convertToSvg
-                model.svgShapes
-                model.selectedShape
+        svgShapes = convertToSvg model
 
-        
         selectShapeButtons = 
             List.map (\shape -> selectShapeButton shape) model.svgShapes
         
         selectedShape = getSelectedShape model.svgShapes model.selectedShape
     in
     
-    div [ At.class "app" ] 
-        [ svg [ Sag.class "canvas"]  svgShapes
+    div [ At.class "app", Html.Events.onMouseUp <| ShouldDragShape False ] 
+        [ svg 
+            [ Sag.class "canvas"
+            , Mouse.onMove (\event -> MouseMove event.offsetPos)
+            , Html.Events.onMouseUp EditShape
+            ] svgShapes
         , h3 [ At.class "title", At.class "propertiesTitle" ] [ text "Properties" ]
         , div [ At.class "editor" ] 
             [ div [ At.class "showSelected" ] [text <| "Selected Shape: " ++ selectedShape.name]

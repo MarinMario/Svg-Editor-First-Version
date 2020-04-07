@@ -12,6 +12,8 @@ type alias Model =
     , inputName : String
     , inputStrokeWidth : String
     , inputStrokeColor : String
+    , mousePos : Position
+    , dragSelectedShape : Bool
     }
 
 type alias Shape =
@@ -46,3 +48,7 @@ type Msg
     | InputName String
     | InputStrokeColor String
     | InputStrokeWidth String
+    | MouseMove Position
+    | ShouldDragShape Bool
+
+type alias Position = (Float, Float)

@@ -14,8 +14,8 @@
     padding: 1rem;
     max-height: calc(100vh - 50px);
     overflow-y: auto;
-    width: 15vw;
     height: fit-content;
+
 }
 
 .canvas {
@@ -30,6 +30,7 @@
     grid-area: b;
     overflow-y: scroll;
     height: fit-content;
+    width: 10vw;
 }
 
 .selectShapeButtons > button {
@@ -38,8 +39,12 @@
 
 .convertedCode {
     border: black solid 1px;
-    max-width: 100%;
     padding: 1rem;
+    overflow-y: auto;
+    overflow-x: auto;
+    background-color: black;
+    color: white;
+
 }
 
 .title {

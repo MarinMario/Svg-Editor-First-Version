@@ -59,20 +59,19 @@ convertToCode model =
             , "\'/>"
             ]
 
-convertToSvg : List Shape -> Int -> List (Svg Msg)
-convertToSvg listWithElements selectedShape = 
+convertToSvg : Model -> List (Svg Msg)
+convertToSvg model = 
     List.map (\shape ->
         if shape.shapeType == Ellipse then
             Svg.g []
-                [ svgEllipse shape
+                [ svgEllipse shape model
                 ]
         else if shape.shapeType == Rectangle then
             Svg.g []
-                [ svgRect shape
+                [ svgRect shape model
                 ]
         else
             Svg.g []
-                [ svgLine shape
+                [ svgLine shape model
                 ]
-        ) listWithElements
-
+        ) model.svgShapes
